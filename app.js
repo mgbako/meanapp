@@ -17,21 +17,23 @@ const fileRoutes = require('./src/api/routes/files');
 
 const uri2 = 'mongodb://mgbako:'+process.env.ATLAS_DB_PASSWORD+'@m-shop-shard-00-00-k7dif.mongodb.net:27017,m-shop-shard-00-01-k7dif.mongodb.net:27017,m-shop-shard-00-02-k7dif.mongodb.net:27017/test?ssl=true&replicaSet=m-shop-shard-0&authSource=admin';
 const url = encodeURI(uri2)
-mongoose.connect(url);
-
-mongoose.connection.once('open', () => {
-  console.log('Connected')
-})
-.on('error', error => {
-  console.warn('Warning', error);
-});
-
-
-//app.use(morgan('dev'));
 
 if(process.env.NODE_ENV !== 'test') {
+
   app.use(morgan('combined'));
+  mongoose.connect(url);
+  mongoose.connection.once('open', () => {
+    console.log('Connected')
+  })
+  
+  .on('error', error => {
+    console.warn('Warning', error);
+  });
+}else{
+  require('./test/db/helper.test');
 }
+
+//app.use(morgan('dev'));
 
 //app.use(cors());
 const publicPath = path.join(__dirname, 'public');

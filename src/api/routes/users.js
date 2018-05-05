@@ -8,9 +8,7 @@ const bcrypt = require('bcryptjs');
 
 const User = require('../../models/user');
 
-
 router.post('/signup', (req, res, next) => {
-  console.log(req.body)
   bcrypt.hash(req.body.password, 10, (err, hash) => {
     if(err){
       res.status(500)
